@@ -1,7 +1,7 @@
 {
   "config": {
     "abort": {
-      "single_instance_allowed": "Only a single configuration of Mail and Packages is allowed."
+      "single_instance_allowed": "Only a single configuration of Travel Tracker is allowed."
     },
     "error": {
       "communication": "Unable to connect or login to the mail server. Please check the log for details.",
@@ -21,7 +21,7 @@
           "username": "Username"
         },
         "description": "Please enter the connection information of your mail server.",
-        "title": "Mail and Packages (Step 1 of 2)"
+        "title": "Travel Tracker (Step 1 of 2)"
       },
       "config_2": {
         "data": {
@@ -38,15 +38,15 @@
           "allow_external": "Create image for notification apps",
           "custom_img": "Use custom 'no image' image?"    
         },
-        "description": "Finish the configuration by customizing the following based on your email structure and Home Assistant installation.\n\nFor details on the [Mail and Packages integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) options review the [configuration, templates, and automations section](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) on GitHub.\n\nIf using Amazon forwarded emails please seperate each address with a comma.",
-        "title": "Mail and Packages (Step 2 of 2)"
+        "description": "Finish the configuration by customizing the following based on your email structure and Home Assistant installation.\n\nFor details on the [Travel Tracker integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) options review the [configuration, templates, and automations section](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) on GitHub.\n\nIf using Amazon forwarded emails please seperate each address with a comma.",
+        "title": "Travel Tracker (Step 2 of 2)"
       },
       "options_3": {
         "data": {
           "custom_img_file": "Path to custom image: (ie: images/my_custom_no_mail.jpg)"
         },
         "description": "Enter the path and file name to your custom no mail image below.\n\nExample: images/custom_nomail.gif",
-        "title": "Mail and Packages (Step 3 of 3)"        
+        "title": "Travel Tracker (Step 3 of 3)"        
       }       
     }
   },
@@ -69,7 +69,7 @@
           "username": "Username"
         },
         "description": "Please enter the connection information of your mail server.",
-        "title": "Mail and Packages (Step 1 of 2)"
+        "title": "Travel Tracker (Step 1 of 2)"
       },
       "options_2": {
         "data": {
@@ -86,15 +86,15 @@
           "allow_external": "Create image for notification apps",
           "custom_img": "Use custom 'no image' image?"      
         },
-        "description": "Finish the configuration by customizing the following based on your email structure and Home Assistant installation.\n\nFor details on the [Mail and Packages integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) options review the [configuration, templates, and automations section](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) on GitHub.\n\nIf using Amazon forwarded emails please seperate each address with a comma.",
-        "title": "Mail and Packages (Step 2 of 2)"
+        "description": "Finish the configuration by customizing the following based on your email structure and Home Assistant installation.\n\nFor details on the [Travel Tracker integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) options review the [configuration, templates, and automations section](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) on GitHub.\n\nIf using Amazon forwarded emails please seperate each address with a comma.",
+        "title": "Travel Tracker (Step 2 of 2)"
       },
       "options_3": {
         "data": {
           "custom_img_file": "Path to custom image: (ie: images/my_custom_no_mail.jpg)"
         },
         "description": "Enter the path and file name to your custom no mail image below.\n\nExample: images/custom_nomail.gif",
-        "title": "Mail and Packages (Step 3 of 3)"          
+        "title": "Travel Tracker (Step 3 of 3)"          
       }      
     }
   }

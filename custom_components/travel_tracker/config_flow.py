@@ -1,4 +1,4 @@
-"""Adds config flow for Mail and Packages."""
+"""Adds config flow for Travel Tracker."""
 
 import logging
 from os import path
@@ -230,7 +230,7 @@ def _get_schema_step_3(user_input: list, default_dict: list) -> Any:
 
 @config_entries.HANDLERS.register(DOMAIN)
 class MailAndPackagesFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
-    """Config flow for Mail and Packages."""
+    """Config flow for Travel Tracker."""
 
     VERSION = 4
     CONNECTION_CLASS = config_entries.CONN_CLASS_CLOUD_POLL
@@ -348,7 +348,7 @@ class MailAndPackagesFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
 
 class MailAndPackagesOptionsFlow(config_entries.OptionsFlow):
-    """Options flow for Mail and Packages."""
+    """Options flow for Travel Tracker."""
 
     def __init__(self, config_entry):
         """Initialize."""
@@ -357,7 +357,7 @@ class MailAndPackagesOptionsFlow(config_entries.OptionsFlow):
         self._errors = {}
 
     async def async_step_init(self, user_input=None):
-        """Manage Mail and Packages options."""
+        """Manage Travel Tracker options."""
         if user_input is not None:
             self._data.update(user_input)
 

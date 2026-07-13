@@ -1,4 +1,4 @@
-"""Mail and Packages Integration."""
+"""Travel Tracker Integration."""
 import asyncio
 import logging
 from datetime import timedelta
@@ -173,7 +173,7 @@ async def async_migrate_entry(hass, config_entry):
             _LOGGER.warning("Missing configuration data: %s", CONF_AMAZON_FWDS)
 
         # Force path change
-        updated_config[CONF_PATH] = "images/mail_and_packages/"
+        updated_config[CONF_PATH] = "images/travel_tracker/"
 
         # Always on image security
         if not config_entry.data[CONF_IMAGE_SECURITY]:
@@ -194,7 +194,7 @@ async def async_migrate_entry(hass, config_entry):
         updated_config = config_entry.data.copy()
 
         # Force path change
-        updated_config[CONF_PATH] = "images/mail_and_packages/"
+        updated_config[CONF_PATH] = "images/travel_tracker/"
 
         # Always on image security
         if not config_entry.data[CONF_IMAGE_SECURITY]:
@@ -231,7 +231,7 @@ class MailDataUpdateCoordinator(DataUpdateCoordinator):
     def __init__(self, hass, host, the_timeout, interval, config):
         """Initialize."""
         self.interval = timedelta(minutes=interval)
-        self.name = f"Mail and Packages ({host})"
+        self.name = f"Travel Tracker ({host})"
         self.timeout = the_timeout
         self.config = config
         self.hass = hass

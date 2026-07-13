@@ -1,4 +1,4 @@
-"""Provide diagnostics for Mail and Packages."""
+"""Provide diagnostics for Travel Tracker."""
 from __future__ import annotations
 
 import logging

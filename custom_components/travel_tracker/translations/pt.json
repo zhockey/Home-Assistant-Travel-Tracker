@@ -46,10 +46,10 @@
                     "custom_img_file": "Path to custom image: (i.e.: images/my_custom_no_mail.jpg)"
                 },
                 "description": "Enter the path and file name to your custom no mail image below.\n\nExample: images/custom_nomail.gif",
-                "title": "Mail and Packages (Step 3 of 3)"
+                "title": "Travel Tracker (Step 3 of 3)"
             }
         },
-        "title": "Mail and Packages"
+        "title": "Travel Tracker"
     },
     "options": {
         "error": {
@@ -80,10 +80,10 @@
                     "gif_duration": "Duração da imagem (segundos)",
                     "image_security": "Nome da imagem aleatória",
                     "generate_mp4": "Crie mp4 a partir de imagens",
-                    "resources": "Sensors List",
-                    "imap_timeout": "Time in seconds before connection timeout (seconds, minimum 10)",
+                    "resources": "Lista de Sensores",
+                    "imap_timeout": "Tempo em segundos antes do tempo limite da conexão (segundos, mínimo 10)",
                     "amazon_fwds": "Amazon forwarded email addresses",
-                    "allow_external": "Create image for notification apps",
+                    "allow_external": "Criar imagem para aplicativos de notificação",
                     "amazon_days": "Days back to check for Amazon emails",
                     "custom_img": "Use custom 'no image' image?"
                 },
@@ -95,9 +95,9 @@
                     "custom_img_file": "Path to custom image: (i.e.: images/my_custom_no_mail.jpg)"
                 },
                 "description": "Enter the path and file name to your custom no mail image below.\n\nExample: images/custom_nomail.gif",
-                "title": "Mail and Packages (Step 3 of 3)"
+                "title": "Travel Tracker (Step 3 of 3)"
             }
         }
     },
-    "title": "Mail and Packages"
+    "title": "Travel Tracker"
 }

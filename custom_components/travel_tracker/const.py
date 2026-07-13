@@ -1,4 +1,4 @@
-"""Constants for Mail and Packages."""
+"""Constants for Travel Tracker."""
 from __future__ import annotations
 
 from typing import Final
@@ -6,7 +6,7 @@ from typing import Final
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntityDescription
 from homeassistant.helpers.entity import EntityCategory
 
-DOMAIN = "mail_and_packages"
+DOMAIN = "travel_tracker"
 DOMAIN_DATA = f"{DOMAIN}_data"
 VERSION = "0.0.0-dev"  # Now updated by release workflow
 ISSUE_URL = "http://github.com/moralmunky/Home-Assistant-Mail-And-Packages"
@@ -52,10 +52,10 @@ CONF_AMAZON_DAYS = "amazon_days"
 
 # Defaults
 DEFAULT_CAMERA_NAME = "Mail USPS Camera"
-DEFAULT_NAME = "Mail And Packages"
+DEFAULT_NAME = "Travel Tracker"
 DEFAULT_PORT = "993"
 DEFAULT_FOLDER = '"INBOX"'
-DEFAULT_PATH = "custom_components/mail_and_packages/images/"
+DEFAULT_PATH = "custom_components/travel_tracker/images/"
 DEFAULT_IMAGE_SECURITY = True
 DEFAULT_IMAP_TIMEOUT = 30
 DEFAULT_GIF_DURATION = 5
@@ -64,7 +64,7 @@ DEFAULT_GIF_FILE_NAME = "mail_today.gif"
 DEFAULT_AMAZON_FWDS = '""'
 DEFAULT_ALLOW_EXTERNAL = False
 DEFAULT_CUSTOM_IMG = False
-DEFAULT_CUSTOM_IMG_FILE = "custom_components/mail_and_packages/images/mail_none.gif"
+DEFAULT_CUSTOM_IMG_FILE = "custom_components/travel_tracker/images/mail_none.gif"
 DEFAULT_AMAZON_DAYS = 3
 
 # Amazon

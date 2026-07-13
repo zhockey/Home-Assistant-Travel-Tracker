@@ -38,7 +38,7 @@
                     "amazon_days": "Days back to check for Amazon emails",
                     "custom_img": "Use custom 'no image' image?"
                 },
-                "description": "Avsluta konfigurationen genom att anpassa följande baserat på din e-poststruktur och installation av hemassistent. \n\n Mer information om alternativen [Mail and Packages] (https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) läser [konfiguration, mallar , och automatiseringsavsnitt] (https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) på GitHub.",
+                "description": "Avsluta konfigurationen genom att anpassa följande baserat på din e-poststruktur och installation av hemassistent. \n\n Mer information om alternativen [Travel Tracker] (https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) läser [konfiguration, mallar , och automatiseringsavsnitt] (https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) på GitHub.",
                 "title": "Mail och paket (steg 2 av 2)"
             },
             "options_3": {
@@ -46,10 +46,10 @@
                     "custom_img_file": "Path to custom image: (i.e.: images/my_custom_no_mail.jpg)"
                 },
                 "description": "Enter the path and file name to your custom no mail image below.\n\nExample: images/custom_nomail.gif",
-                "title": "Mail and Packages (Step 3 of 3)"
+                "title": "Travel Tracker (Step 3 of 3)"
             }
         },
-        "title": "Mail and Packages"
+        "title": "Travel Tracker"
     },
     "options": {
         "error": {
@@ -87,7 +87,7 @@
                     "amazon_days": "Days back to check for Amazon emails",
                     "custom_img": "Use custom 'no image' image?"
                 },
-                "description": "Avsluta konfigurationen genom att anpassa följande baserat på din e-poststruktur och installation av hemassistent. \n\n Mer information om alternativen [Mail and Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) läser [konfiguration, mallar , och automatiseringsavsnitt](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) på GitHub.",
+                "description": "Avsluta konfigurationen genom att anpassa följande baserat på din e-poststruktur och installation av hemassistent. \n\n Mer information om alternativen [Travel Tracker](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) läser [konfiguration, mallar , och automatiseringsavsnitt](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings#configuration) på GitHub.",
                 "title": "Mail och paket (steg 2 av 2)"
             },
             "options_3": {
@@ -95,9 +95,9 @@
                     "custom_img_file": "Path to custom image: (i.e.: images/my_custom_no_mail.jpg)"
                 },
                 "description": "Enter the path and file name to your custom no mail image below.\n\nExample: images/custom_nomail.gif",
-                "title": "Mail and Packages (Step 3 of 3)"
+                "title": "Travel Tracker (Step 3 of 3)"
             }
         }
     },
-    "title": "Mail and Packages"
+    "title": "Travel Tracker"
 }

@@ -10,4 +10,4 @@ update_image:
       selector:
         entity:
           domain: camera
-          integration: mail_and_packages
+          integration: travel_tracker

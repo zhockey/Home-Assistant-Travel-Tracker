@@ -1,4 +1,4 @@
-"""Helper functions for Mail and Packages."""
+"""Helper functions for Travel Tracker."""
 
 import datetime
 import email
@@ -135,7 +135,7 @@ def default_image_path(
     Returns the default path based on logic (placeholder for future code)
     """
     # Return the default
-    return "custom_components/mail_and_packages/images/"
+    return "custom_components/travel_tracker/images/"
 
 
 def process_emails(hass: HomeAssistant, config: ConfigEntry) -> dict:
@@ -197,7 +197,7 @@ def copy_images(hass: HomeAssistant, config: ConfigEntry) -> None:
     """Copy images to www directory if enabled."""
     paths = []
     src = f"{hass.config.path()}/{config.get(CONF_PATH)}"
-    dst = f"{hass.config.path()}/www/mail_and_packages/"
+    dst = f"{hass.config.path()}/www/travel_tracker/"
 
     # Setup paths list
     paths.append(dst)
