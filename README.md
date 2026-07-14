@@ -1,57 +1,196 @@
-![GitHub](https://img.shields.io/github/license/moralmunky/Home-Assistant-Mail-And-Packages)
-![GitHub Repo stars](https://img.shields.io/github/stars/moralmunky/Home-Assistant-Mail-And-Packages)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/moralmunky/Home-Assistant-Mail-And-Packages)
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
-![Pytest](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/workflows/Pytest/badge.svg?branch=master)
-![CodeQL](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/workflows/CodeQL/badge.svg?branch=master)
-![Validate with hassfest](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/workflows/Validate%20with%20hassfest/badge.svg?branch=master)
+# ✈️ Travel Tracker
 
-![GitHub contributors](https://img.shields.io/github/contributors/moralmunky/Home-Assistant-Mail-And-Packages)
-![Maintenance](https://img.shields.io/maintenance/yes/2022)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/y/moralmunky/Home-Assistant-Mail-And-Packages)
-![GitHub commits since tagged version](https://img.shields.io/github/commits-since/moralmunky/Home-Assistant-Mail-And-Packages/0.3.3-2/dev)
-![GitHub last commit](https://img.shields.io/github/last-commit/moralmunky/Home-Assistant-Mail-And-Packages/dev)
-![Codecov branch](https://img.shields.io/codecov/c/github/moralmunky/Home-Assistant-Mail-And-Packages/master)
+> Turn travel confirmation emails into Home Assistant entities.
 
-## About Mail and Packages integration
+Travel Tracker is a Home Assistant custom integration that automatically scans your travel confirmation emails and builds structured trip information for use in dashboards, automations, notifications, and family travel planning.
 
-The [Mail and Packages integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages) creates sensors for [supported shippers](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Supported-Shipper-Requirements) to show a snapshot of mail and **packages that are scheduled to be delivered the current day**. For the packages that are scheduled for delivery the current day a count of in transit and delivered packages will be provided. It also generates the number of USPS mail pieces and provides a rotating GIF of the USPS provided images of the mail, if available, for the current day.
+Instead of manually entering flights, hotels, and rental cars into Home Assistant, simply book your travel and let Travel Tracker do the rest.
 
-## Credits:
+---
 
-- Huge contributions from [@firstof9](https://github.com/firstof9) moving the project forward and keeping it active!
-  <br/>
-  <a href="https://www.buymeacoffee.com/Moralmunky" target="_blank"><img src="/docs/coffee.png" alt="Buy Us A Coffee" height="51px" width="217px" /></a>
+## ✨ Planned Features
 
-## How it works
+### ✈️ Flights
 
-From your instance of HASS, the [Mail and Packages integration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages) connects to the email account you supply where your shipment notifications are sent. It reviews at the subject lines of the current day's emails from the [supported shippers](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Supported-Shipper-Requirements) and counts the subject lines that match known language from the [supported shippers](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Supported-Shipper-Requirements) about their transit status. For USPS Informed delivery emails, it also downloads the mail images to combine them into a rotating GIF. 
-See the WIKI [information on how this works](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki).
+- Flight number
+- Airline
+- Departure airport
+- Arrival airport
+- Departure time
+- Arrival time
 
-_**The email can not be deleted until the next day**_. You can have your email filtered into a folder and have the integration watch that folder.
+### 🏨 Hotels
 
-The image will revert back to the no mail graphic after the first email check after midnight, local time.
+- Hotel name
+- City
+- Check-in date
+- Check-out date
 
-* **All procedures are done locally on your machine.**
-* **No external services are used to process your email.**
-* **No data is sent outside of your local instance of Home Assistant**
+### 🚗 Rental Cars
 
-##### *Privacy / Security Note
-Please note that files stored in the `www` Home Assistant folder are [publicly accessible](https://www.home-assistant.io/integrations/http/#hosting-files) unless you have taken security measures outside of Home Assistant to secure it. For increased security and simplicity the USPS Informed Delivery image name is random by default and no longer has the option to turn it on/off. Two new sensors have been created that provide the local file path or a web accessible url for use in displaying or sending in various Home Assistant notification methods.
+- Rental company
+- Pickup location
+- Pickup date
+- Return date
 
-* `sensor.mail_image_system_path`
-* `sensor.mail_image_url` - Requires that either `External_URL` or `Internal_URL` is defined in the general configuration options in Home Assistant.
+### 📅 Trip Management
 
-## Support
-[Configuration](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Configuration-and-Email-Settings)
+- Automatically group reservations into trips
+- Next trip summary
+- Days until departure
+- Family-friendly travel dashboard
+- Home Assistant entities
+- Automation support
 
-[Troubleshooting](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Troubleshooting)
+---
 
-[Supported Shipper Requirements](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Supported-Shipper-Requirements)
+# Supported Providers (Planned)
 
-## Template and Examples
-[USPS Informed Delivery Image](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/USPS-Informed-Delivery-Image)
+## Airlines
 
-[Text Summary](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Mail-Summary-Message)
+- American Airlines
+- Delta
+- United
+- Southwest
+- JetBlue
+- Air Canada
 
-[Notificaions](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages/wiki/Notifications)
+## Hotels
+
+- Hilton
+- Marriott
+
+## Rental Cars
+
+- National
+- Enterprise
+
+Additional providers will be added over time.
+
+---
+
+# Example Dashboard
+
+```
+✈️ NEXT TRIP
+
+Dallas, Texas
+
+Leaves
+July 22
+
+Flight
+AA1234
+
+Hotel
+Hilton Garden Inn
+
+Rental Car
+National
+
+Returns
+July 25
+```
+
+---
+
+# Planned Home Assistant Entities
+
+```
+sensor.next_trip
+sensor.next_flight
+sensor.next_hotel
+sensor.next_rental_car
+
+binary_sensor.travel_today
+binary_sensor.travel_this_week
+sensor.days_until_trip
+```
+
+---
+
+# Privacy & Security
+
+Travel Tracker is designed with privacy as a first-class feature.
+
+- ✅ All email processing happens locally inside Home Assistant.
+- ✅ No cloud services are used.
+- ✅ No travel data leaves your Home Assistant instance.
+- ✅ Confirmation numbers are **not stored**.
+- ✅ Ticket numbers are **not stored**.
+- ✅ Payment information is **never stored**.
+- ✅ Loyalty account numbers are **never stored**.
+- ✅ Reservation management links are discarded after parsing.
+
+Travel Tracker stores only the information necessary to build your travel dashboard and Home Assistant entities.
+
+---
+
+# Roadmap
+
+## Version 0.1
+
+- Rename integration
+- Standalone Home Assistant integration
+- Development environment
+
+## Version 0.2
+
+- American Airlines parser
+
+## Version 0.3
+
+- Hilton parser
+
+## Version 0.4
+
+- National Car Rental parser
+
+## Version 0.5
+
+- Trip Builder
+
+## Version 0.6
+
+- Dashboard entities
+
+## Version 1.0
+
+- HACS Release
+- Community provider support
+
+---
+
+# Credits
+
+Travel Tracker began as a fork of the outstanding **Mail and Packages** integration created by **Moralmunky** and its contributors.
+
+The Mail and Packages project solved the challenge of securely connecting Home Assistant to email providers and building a robust email-processing framework. Travel Tracker builds upon that foundation to parse travel confirmations instead of shipment notifications.
+
+A sincere thank you to:
+
+- **Moralmunky**
+- **@firstof9**
+- All contributors to the Mail and Packages project
+
+Their work made this project possible.
+
+Original Project:
+
+https://github.com/moralmunky/Home-Assistant-Mail-And-Packages
+
+---
+
+# Contributing
+
+Contributions, bug reports, provider requests, and feature ideas are always welcome.
+
+As the project grows, additional airline, hotel, rental car, cruise, rail, and travel providers will be added with community support.
+
+---
+
+# License
+
+This project is licensed under the MIT License.
+
+Travel Tracker is a derivative work of the Mail and Packages integration and retains all required license notices from the original project.ns)
