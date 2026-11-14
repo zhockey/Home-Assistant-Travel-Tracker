@@ -2,8 +2,23 @@
   "config": {
     "step": {
       "user": {
-        "title": "Travel Tracker",
-        "description": "Connect a read-only IMAP mailbox or travel folder.",
+        "menu_options": {
+          "linked": "Use saved Mail and Packages account settings",
+          "imap": "Set up a separate IMAP connection"
+        }
+      },
+      "linked": {
+        "title": "Use Mail and Packages settings",
+        "description": "Select an existing Mail and Packages account. Travel Tracker will reuse its saved credentials without copying them into its own configuration, but it still opens a separate read-only IMAP connection. Leave Folder override blank to scan the Mail and Packages folder.",
+        "data": {
+          "linked_entry_id": "Existing Mail and Packages account",
+          "folder": "Folder override (optional)",
+          "scan_interval": "Scan interval (minutes)"
+        }
+      },
+      "imap": {
+        "title": "Connect a separate IMAP mailbox",
+        "description": "Create an independent read-only travel mailbox connection.",
         "data": {
           "host": "IMAP host",
           "port": "IMAP port",
@@ -16,10 +31,12 @@
     },
     "error": {
       "cannot_connect": "Unable to connect to the mail server.",
-      "invalid_auth_or_folder": "Invalid credentials or unable to select this folder."
+      "invalid_auth_or_folder": "Invalid credentials or unable to select this folder.",
+      "invalid_source": "Select an available Mail and Packages account."
     },
     "abort": {
-      "already_configured": "This mailbox folder is already configured."
+      "already_configured": "This source and folder are already configured.",
+      "mail_and_packages_not_found": "No usable Mail and Packages account is installed."
     }
   }
 }

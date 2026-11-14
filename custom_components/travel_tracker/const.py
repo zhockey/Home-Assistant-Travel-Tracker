@@ -13,3 +13,10 @@ LOOKBACK_DAYS = 365
 MAX_MESSAGES = 300
 MAX_EMAIL_BYTES = 512 * 1024
 MAX_BODY_CHARS = 150_000
+
+# Optional, explicitly selected Mail and Packages configuration reference
+MAIL_AND_PACKAGES_DOMAIN = "mail_and_packages"
+CONF_SOURCE = "source"
+CONF_LINKED_ENTRY_ID = "linked_entry_id"
+SOURCE_IMAP = "imap"
+SOURCE_LINKED = "mail_and_packages"
