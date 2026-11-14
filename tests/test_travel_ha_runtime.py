@@ -55,3 +55,47 @@ async def test_config_flow_password_is_masked(hass: HomeAssistant):
     # Iterate schema keys by their underlying field names, not marker objects.
     password_selector = next(value for key, value in schema.schema.items() if str(key) == CONF_PASSWORD)
     assert password_selector.config["type"] == TextSelectorType.PASSWORD
+
+
+async def test_config_flow_creates_entry_with_mocked_imap(hass: HomeAssistant):
+    """Exercise the full configuration form without connecting to a real server."""
+    sample = {
+        CONF_HOST: "imap.example.test",
+        CONF_PORT: 993,
+        CONF_USERNAME: "synthetic@example.test",
+        CONF_PASSWORD: "test-only-password",
+        "folder": "Travel",
+        "scan_interval": 30,
+    }
+    flow = await hass.config_entries.flow.async_init(DOMAIN, context={"source": "user"})
+    with patch("custom_components.travel_tracker.config_flow.test_mailbox"):
+        result = await hass.config_entries.flow.async_configure(
+            flow["flow_id"], user_input=sample
+        )
+    assert result["type"].value == "create_entry"
+    assert result["data"]["folder"] == "Travel"
+
+
+async def test_config_flow_rejects_invalid_mocked_credentials(hass: HomeAssistant):
+    """A bad IMAP login should produce a form error without exposing the password."""
+    import imaplib
+
+    sample = {
+        CONF_HOST: "imap.example.test",
+        CONF_PORT: 993,
+        CONF_USERNAME: "synthetic@example.test",
+        CONF_PASSWORD: "test-only-password",
+        "folder": "Travel",
+        "scan_interval": 30,
+    }
+    flow = await hass.config_entries.flow.async_init(DOMAIN, context={"source": "user"})
+    with patch(
+        "custom_components.travel_tracker.config_flow.test_mailbox",
+        side_effect=imaplib.IMAP4.error("bad mock credentials"),
+    ):
+        result = await hass.config_entries.flow.async_configure(
+            flow["flow_id"], user_input=sample
+        )
+    assert result["type"].value == "form"
+    assert result["errors"]["base"] == "invalid_auth_or_folder"
+    assert "test-only-password" not in str(result)
