@@ -1,0 +1,40 @@
+name: Travel Tracker HA sandbox
+
+on:
+  push:
+    branches:
+      - feature/travel-parser-mvp
+  pull_request:
+    paths:
+      - "custom_components/travel_tracker/**"
+      - "tests/test_travel_ha_runtime.py"
+      - "tests/test_full_sandbox.py"
+      - ".github/workflows/travel-ha-sandbox.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-mailbox:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: python -m pip install pytest==8.4.2
+      - name: Pure Python simulated IMAP and itinerary tests
+        run: python -m pytest --noconftest -q tests/test_travel_parser.py tests/test_full_sandbox.py
+
+  home-assistant-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install HA testing fixtures
+        run: python -m pip install pytest-homeassistant==2026.11.0
+      - name: Real Home Assistant entity setup test (fake inbox only)
+        run: python -m pytest --noconftest -q -o asyncio_mode=auto tests/test_travel_ha_runtime.py
