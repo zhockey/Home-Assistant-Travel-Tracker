@@ -76,7 +76,7 @@ def _clean(value: str) -> str:
     value = re.sub(r"[\x00-\x1f\x7f]+", " ", value)
     # Never publish codes accidentally appended to otherwise valid itinerary fields.
     value = re.split(
-        r"(?i)\\b(?:confirmation|reservation(?:\\s+(?:number|code))?|booking\\s+(?:reference|code)|ticket\\s+(?:number|code)|payment|card\\s+ending|loyalty\\s+(?:number|id)|member\\s+(?:number|id))\\b\\s*[:#-]?",
+        r"(?i)\b(?:confirmation|reservation(?:\s+(?:number|code))?|booking\s+(?:reference|code)|ticket\s+(?:number|code)|payment|card\s+ending|loyalty\s+(?:number|id)|member\s+(?:number|id))\b\s*[:#-]?",
         value,
         maxsplit=1,
     )[0]
