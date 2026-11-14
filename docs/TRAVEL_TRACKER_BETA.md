@@ -1,46 +1,49 @@
-# Travel Tracker v0.2 beta
+# Travel Tracker v0.2 beta: engineering notes
 
-This is a development preview, not yet a HACS release. The old Mail and Packages
-fork contained in the repository still has legacy tests, assets and workflows.
-The integration path `custom_components/travel_tracker` is being replaced with a
-travel-specific implementation.
+**Status:** pre-release draft. **Do not install on production Home Assistant yet.**
 
-## What it does
+## What exists now
 
-- Connects to a TLS IMAP mailbox, selecting the configured folder read-only.
-- Reads recent messages with `BODY.PEEK[]` and never marks them read.
-- Parses *example-format* American Airlines, Hilton, and National confirmation emails.
-- Exposes six HA sensors and two binary sensors from a deduplicated itinerary snapshot.
-- Does not store raw mail, loyalty details, payment numbers or booking references.
-- Limits mailbox scans to 300 recent messages within the last 365 days.
-- Supports a 15 to 240 minute polling interval, default 30 minutes.
+- Minimal custom integration under `custom_components/travel_tracker/`.
+- Secure IMAP (TLS) setup via Home Assistant, with a password-style field.
+- Read-only folder selection and `BODY.PEEK[]` to avoid marking messages as read.
+- Bound scanning: 365 days of mail, at most 300 recent messages per refresh, up to 512 KiB per parsed message.
+- Parsers for **synthetic example formats**, not comprehensive live provider templates: American Airlines, Hilton, National.
+- In-memory booking parsing and same-day updates using itinerary identity, without storing confirmation IDs.
+- Basic date-adjacency trip grouping.
+- Six HA sensors and two binary sensors. Home Assistant Recorder may retain trip data.
+- Cancellation notices do not create new bookings. **They do not yet erase an earlier confirmed booking.**
 
-## Standalone validation
+## Tests
+
+Run isolated tests without Home Assistant or mail credentials:
 
 ```sh
 python -m pip install pytest
 python -m pytest --noconftest -q tests/test_travel_parser.py tests/test_full_sandbox.py
 ```
 
-No Home Assistant, real email account or network is needed for these tests.
+GitHub Actions:
+- `travel-parser-sandbox.yml` runs pure parser checks on Python 3.12 and 3.13.
+- `travel-ha-sandbox.yml` runs fake-IMAP end-to-end checks and a Home Assistant 2026.11 runtime test (Python 3.14) with no real email.
+- The actual HA test covers entity creation and unload plus UI configuration form, mock authentication failure, and password field masking.
 
-## Disposable HA runtime smoke test
+## Privacy model
 
-Use Python 3.13 and the `pytest-homeassistant` package matching Home Assistant.
-The file `tests/test_travel_ha_runtime.py` exercises an actual HA config entry,
-coordinator, platform loading, entities and unload without a real mailbox. The
-`Travel Tracker HA sandbox` workflow runs it on GitHub-hosted runners.
+Travel Tracker itself processes email locally and does not write raw messages or attachments to disk. It stores credentials using Home Assistant's config-entry storage, so HA backups and machine administrators must still be protected. It exposes trip details in entity attributes; Home Assistant Recorder, backups and connected dashboards can retain that information.
 
-## Cautions
+An IMAP username, app password and TLS connection to the email provider are required. Sender-domain checking is only a *parsing heuristic*, not a guarantee of sender authenticity. No provider logins or personal booking emails are stored in the public repository.
 
-- **Do not install over your production HA integration yet.**
-- **Do not merge before the HA sandbox passes and provider templates are verified.**
-- Home Assistant keeps IMAP credentials in its protected config-entry storage; use
-  an app password and a dedicated travel folder/mailbox.
-- Dates and trip cities *will* be visible in HA state history and backups.
-- The parser trusts matching sender domains for format recognition but does
-  not authenticate SMTP sender identity or verify SPF/DKIM.
-- There is no support yet for cancellations, date changes, true round-trip
-  grouping, OAuth-only mail providers, or live flight data.
+## Known problems before external beta
 
-Original Mail and Packages MIT attribution remains in the repository LICENSE.
+- Gmail and Microsoft accounts may require additional authentication or OAuth. IMAP app passwords are not universally supported.
+- Actual provider HTML templates are not yet covered by test examples.
+- Multi-leg flights within a single message are not supported.
+- A date change to a different day may appear as a new booking; same-day time updates do reconcile.
+- Cancellation notices with full itinerary do **not** remove older confirmation emails.
+- The trip builder groups by overlapping/adjacent dates and can merge unrelated trips.
+- Travel history and message scanning are limited by the lookback and message caps.
+- No live flight status or gate data, reauthentication flow, or robust migration from previous fork versions.
+- No system-level end-user test on a complete disposable Home Assistant installation.
+
+See [release checklist](RELEASE_CHECKLIST.md) before merging.
