@@ -2,7 +2,18 @@
 
 from datetime import date
 
-from custom_components.travel_tracker.parser import parse_confirmation
+# Import the pure parser directly, bypassing the legacy integration's HA imports.
+import importlib.util
+from pathlib import Path
+import sys
+
+PARSER_PATH = Path(__file__).resolve().parents[1] / "custom_components" / "travel_tracker" / "parser.py"
+spec = importlib.util.spec_from_file_location("travel_tracker_isolated_parser", PARSER_PATH)
+assert spec is not None and spec.loader is not None
+module = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = module
+spec.loader.exec_module(module)
+parse_confirmation = module.parse_confirmation
 
 
 AA_BODY = """Flight: AA 2345
