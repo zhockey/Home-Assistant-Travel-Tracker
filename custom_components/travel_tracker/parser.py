@@ -80,7 +80,7 @@ def _clean(value: str) -> str:
         value,
         maxsplit=1,
     )[0]
-    return re.sub(r"\\s+", " ", value).strip(" -|,;")[:100]
+    return re.sub(r"\s+", " ", value).strip(" -|,;")[:100]
 
 
 def _date(value: str) -> date | None:
@@ -128,7 +128,7 @@ def parse_confirmation(sender: str, subject: str, body: str) -> Booking | None:
         return None
     # Cancelled notices should not create new bookings. Proper cancellation
     # reconciliation with earlier confirmations remains a future feature.
-    if re.search(r"\\b(?:canceled|cancelled|voided)\\b", subject, re.I):
+    if re.search(r"\b(?:canceled|cancelled|voided)\b", subject, re.I):
         return None
     body = body[:150_000]
 
