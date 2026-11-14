@@ -9,6 +9,8 @@ Travel Tracker scans a dedicated IMAP mailbox/folder **locally**, extracts simpl
 - Example-format American Airlines, Hilton, and National rental confirmations (not comprehensive provider support).
 - 6 sensors: next trip, next flight, next hotel, next rental car, days until next trip, upcoming trips.
 - 2 binary sensors: travel today and travel within the next 7 days.
+- Two setup modes: opt in to **reuse Mail and Packages IMAP settings** (no password re-entry) or configure a **separate IMAP mailbox**.
+- Linked Mail and Packages mode still performs a second independent IMAP scan; true shared-connection mode requires supported upstream cooperation.
 - Secure IMAP (TLS, port 993 default), read-only mailbox selection, and `BODY.PEEK[]`.
 - No raw email or attachments persisted by Travel Tracker. No confirmation numbers, ticket numbers, payment details or loyalty numbers intentionally retained.
 - No analytics processing outside your HA instance; mailbox connection itself is to your mail provider.
@@ -21,7 +23,9 @@ A disposable Home Assistant install is the supported test target while we valida
 
 1. In your isolated HA config directory create `custom_components/travel_tracker` with the integration's files.
 2. Restart the test HA instance, then use **Settings → Devices & services → Add integration → Travel Tracker**.
-3. Configure your IMAP host, port, username, app password, dedicated folder and poll interval.
+3. If Mail and Packages is already installed, choose either **Reuse Mail and Packages settings** or **Set up a separate IMAP connection**. Otherwise the standalone setup form opens directly.
+4. In linked mode, choose the source account and optionally override its email folder. No second password is stored, but Travel Tracker still scans IMAP separately.
+5. For standalone mode, configure your IMAP host, port, username, app password, travel folder and poll interval.
 4. Use a dedicated, non-sensitive test mailbox. Do not paste real credentials into GitHub issues or tests.
 
 ## Run isolated tests

@@ -8,6 +8,8 @@
 - [x] Mock IMAP, including read-only folder and non-marking fetch
 - [x] Home Assistant 2026.11 test harness creates and unloads entities
 - [x] Home Assistant config form uses password-style selector
+- [ ] Verify linked Mail and Packages account selection and missing-source behavior in HA CI
+- [ ] Agree a versioned, supported shared-mail feed interface with Mail and Packages maintainers if zero duplicate IMAP scanning is desired
 - [x] Test no booking codes or card details in parsed output
 - [x] Basic updated same-day flight notifications replace earlier time
 - [ ] A full disposable Home Assistant UI install (not only the test harness)

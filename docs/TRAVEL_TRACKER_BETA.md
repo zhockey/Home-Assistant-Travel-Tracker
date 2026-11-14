@@ -5,7 +5,8 @@
 ## What exists now
 
 - Minimal custom integration under `custom_components/travel_tracker/`.
-- Secure IMAP (TLS) setup via Home Assistant, with a password-style field.
+- Two setup paths: standalone secure IMAP (TLS) with password-style field, or explicit opt-in reuse of an installed Mail and Packages account's saved IMAP settings.
+- In linked mode, Travel Tracker stores only a source config-entry reference (plus optional travel-folder override). It does not duplicate the source password. It still opens **its own read-only IMAP connection**. It does not intercept source mail or access the source integration's runtime connection.
 - Read-only folder selection and `BODY.PEEK[]` to avoid marking messages as read.
 - Bound scanning: 365 days of mail, at most 300 recent messages per refresh, up to 512 KiB per parsed message.
 - Parsers for **synthetic example formats**, not comprehensive live provider templates: American Airlines, Hilton, National.
@@ -36,6 +37,7 @@ An IMAP username, app password and TLS connection to the email provider are requ
 
 ## Known problems before external beta
 
+- A linked Mail and Packages account is not true shared IMAP polling. The source's configured mail folder might contain only package emails, so select a folder override containing travel confirmations if required. Removing the source account breaks the Travel Tracker link until reconfigured.
 - Gmail and Microsoft accounts may require additional authentication or OAuth. IMAP app passwords are not universally supported.
 - Actual provider HTML templates are not yet covered by test examples.
 - Multi-leg flights within a single message are not supported.

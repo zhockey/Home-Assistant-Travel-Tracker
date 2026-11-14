@@ -99,3 +99,126 @@ async def test_config_flow_rejects_invalid_mocked_credentials(hass: HomeAssistan
     assert result["type"].value == "form"
     assert result["errors"]["base"] == "invalid_auth_or_folder"
     assert "test-only-password" not in str(result)
+
+
+
+async def test_existing_mail_and_packages_offered_as_explicit_option(
+    hass: HomeAssistant,
+):
+    """The settings reuse is opt-in, and the linked entry contains no secrets."""
+    from custom_components.travel_tracker.const import (
+        CONF_LINKED_ENTRY_ID, CONF_SOURCE, SOURCE_LINKED,
+    )
+
+    source = MockConfigEntry(
+        domain="mail_and_packages",
+        title="Mail and Packages",
+        data={
+            CONF_HOST: "imap.mail.example",
+            CONF_PORT: 993,
+            CONF_USERNAME: "synthetic@example.test",
+            CONF_PASSWORD: "source-only-secret",
+            "folder": "Packages",
+        },
+    )
+    source.add_to_hass(hass)
+
+    menu = await hass.config_entries.flow.async_init(
+        DOMAIN, context={"source": "user"}
+    )
+    assert menu["type"].value == "menu"
+    assert "linked" in menu["menu_options"]
+    assert "imap" in menu["menu_options"]
+
+    form = await hass.config_entries.flow.async_configure(
+        menu["flow_id"], user_input={"next_step_id": "linked"}
+    )
+    assert form["type"].value == "form"
+    entry = await hass.config_entries.flow.async_configure(
+        menu["flow_id"],
+        user_input={
+            CONF_LINKED_ENTRY_ID: source.entry_id,
+            "folder": "Travel",
+            "scan_interval": 30,
+        },
+    )
+    assert entry["type"].value == "create_entry"
+    assert entry["data"][CONF_SOURCE] == SOURCE_LINKED
+    assert entry["data"][CONF_LINKED_ENTRY_ID] == source.entry_id
+    assert entry["data"]["folder"] == "Travel"
+    assert "source-only-secret" not in str(entry["data"])
+    assert CONF_PASSWORD not in entry["data"]
+
+
+async def test_linked_account_reuses_settings_with_separate_read_only_scan(
+    hass: HomeAssistant,
+):
+    """Linked mode uses source credentials at runtime without duplicating them."""
+    from custom_components.travel_tracker.const import (
+        CONF_LINKED_ENTRY_ID, CONF_SOURCE, SOURCE_LINKED,
+    )
+
+    source = MockConfigEntry(
+        domain="mail_and_packages",
+        title="Mail and Packages",
+        data={
+            CONF_HOST: "imap.mail.example",
+            CONF_PORT: 993,
+            CONF_USERNAME: "synthetic@example.test",
+            CONF_PASSWORD: "source-only-secret",
+            "folder": "Packages",
+        },
+    )
+    source.add_to_hass(hass)
+    linked = MockConfigEntry(
+        domain=DOMAIN,
+        title="Travel Tracker (Mail and Packages settings)",
+        data={
+            CONF_SOURCE: SOURCE_LINKED,
+            CONF_LINKED_ENTRY_ID: source.entry_id,
+            "folder": "Travel",
+            "scan_interval": 30,
+        },
+    )
+    linked.add_to_hass(hass)
+    with patch(
+        "custom_components.travel_tracker.coordinator.fetch_bookings",
+        return_value=[],
+    ) as fetch:
+        assert await hass.config_entries.async_setup(linked.entry_id)
+        await hass.async_block_till_done()
+    assert fetch.call_count >= 1
+    args = fetch.call_args.args
+    assert args[:5] == (
+        "imap.mail.example", 993, "synthetic@example.test",
+        "source-only-secret", "Travel",
+    )
+    assert CONF_PASSWORD not in linked.data
+    assert await hass.config_entries.async_unload(linked.entry_id)
+
+
+async def test_missing_mail_and_packages_account_fails_closed(
+    hass: HomeAssistant,
+):
+    """A removed source should never fall back to stored or guessed credentials."""
+    import pytest
+    from homeassistant.helpers.update_coordinator import UpdateFailed
+    from custom_components.travel_tracker.coordinator import TravelCoordinator
+    from custom_components.travel_tracker.const import (
+        CONF_LINKED_ENTRY_ID, CONF_SOURCE, SOURCE_LINKED,
+    )
+
+    linked = MockConfigEntry(
+        domain=DOMAIN,
+        title="Travel Tracker (Mail and Packages settings)",
+        data={
+            CONF_SOURCE: SOURCE_LINKED,
+            CONF_LINKED_ENTRY_ID: "no-longer-installed",
+        },
+    )
+    with patch(
+        "custom_components.travel_tracker.coordinator.fetch_bookings"
+    ) as fetch:
+        with pytest.raises(UpdateFailed, match="unavailable"):
+            await TravelCoordinator(hass, linked)._async_update_data()
+    fetch.assert_not_called()
