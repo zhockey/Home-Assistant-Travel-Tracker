@@ -8,6 +8,7 @@ import ssl
 from homeassistant import config_entries
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_PORT, CONF_USERNAME
 import voluptuous as vol
+from homeassistant.helpers.selector import TextSelector, TextSelectorConfig, TextSelectorType
 
 from .const import (
     CONF_FOLDER, CONF_SCAN_INTERVAL, DEFAULT_FOLDER, DEFAULT_PORT,
@@ -47,7 +48,8 @@ class TravelTrackerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             vol.Optional(CONF_PORT, default=DEFAULT_PORT): vol.All(
                 vol.Coerce(int), vol.Range(min=1, max=65535)),
             vol.Required(CONF_USERNAME): str,
-            vol.Required(CONF_PASSWORD): str,
+            vol.Required(CONF_PASSWORD): TextSelector(TextSelectorConfig(
+                type=TextSelectorType.PASSWORD, autocomplete="current-password")),
             vol.Optional(CONF_FOLDER, default=DEFAULT_FOLDER): str,
             vol.Optional(CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL): vol.All(
                 vol.Coerce(int), vol.Range(min=MIN_SCAN_INTERVAL, max=MAX_SCAN_INTERVAL)),

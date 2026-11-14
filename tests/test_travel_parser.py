@@ -107,3 +107,19 @@ def test_repeat_yields_same_deduplication_key():
     first = parse_confirmation("test@aa.com", "Flight", AA_BODY)
     second = parse_confirmation("test@aa.com", "Flight", AA_BODY)
     assert first.key == second.key
+
+
+def test_cancelled_subject_does_not_create_new_booking():
+    assert parse_confirmation("notification@aa.com", "Your flight is cancelled", AA_BODY) is None
+    assert parse_confirmation("notification@aa.com", "Flight confirmed", AA_BODY) is not None
+
+
+def test_sensitive_codes_appended_to_hotel_field_do_not_leak():
+    altered = HILTON_BODY.replace(
+        "Hotel: Hilton Garden Inn Pittsburgh",
+        "Hotel: Hilton Garden Inn Pittsburgh | Confirmation: SECURE-PNR-123",
+    )
+    booking = parse_confirmation("stay@hilton.com", "Confirmed", altered)
+    assert booking is not None
+    assert booking.details["hotel"] == "Hilton Garden Inn Pittsburgh"
+    assert "SECURE-PNR-123" not in str(booking.as_dict())

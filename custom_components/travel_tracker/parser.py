@@ -74,7 +74,13 @@ def _field(text: str, *labels: str) -> str:
 
 def _clean(value: str) -> str:
     value = re.sub(r"[\x00-\x1f\x7f]+", " ", value)
-    return re.sub(r"\s+", " ", value).strip()[:100]
+    # Never publish codes accidentally appended to otherwise valid itinerary fields.
+    value = re.split(
+        r"(?i)\\b(?:confirmation|reservation(?:\\s+(?:number|code))?|booking\\s+(?:reference|code)|ticket\\s+(?:number|code)|payment|card\\s+ending|loyalty\\s+(?:number|id)|member\\s+(?:number|id))\\b\\s*[:#-]?",
+        value,
+        maxsplit=1,
+    )[0]
+    return re.sub(r"\\s+", " ", value).strip(" -|,;")[:100]
 
 
 def _date(value: str) -> date | None:
@@ -119,6 +125,10 @@ def parse_confirmation(sender: str, subject: str, body: str) -> Booking | None:
     """
     provider = _provider(sender)
     if not provider:
+        return None
+    # Cancelled notices should not create new bookings. Proper cancellation
+    # reconciliation with earlier confirmations remains a future feature.
+    if re.search(r"\\b(?:canceled|cancelled|voided)\\b", subject, re.I):
         return None
     body = body[:150_000]
 

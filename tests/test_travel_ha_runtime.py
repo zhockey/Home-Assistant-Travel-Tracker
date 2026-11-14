@@ -43,3 +43,15 @@ async def test_integration_creates_eight_entities(hass: HomeAssistant):
     assert len(binary_sensors) >= 2, [s.entity_id for s in binary_sensors]
     assert any(state.state == "BOS to PIT" for state in sensors)
     assert await hass.config_entries.async_unload(entry.entry_id)
+
+
+async def test_config_flow_password_is_masked(hass: HomeAssistant):
+    """Ensure the IMAP password cannot be entered in a plaintext field."""
+    from homeassistant.helpers.selector import TextSelectorType
+    from homeassistant.const import CONF_PASSWORD
+    flow = await hass.config_entries.flow.async_init(DOMAIN, context={"source": "user"})
+    assert flow["type"].value == "form"
+    schema = flow["data_schema"]
+    # Iterate schema keys by their underlying field names, not marker objects.
+    password_selector = next(value for key, value in schema.schema.items() if str(key) == CONF_PASSWORD)
+    assert password_selector.config["type"] == TextSelectorType.PASSWORD
