@@ -1,196 +1,58 @@
-# ✈️ Travel Tracker
+# Travel Tracker for Home Assistant ✈️
 
-> Turn travel confirmation emails into Home Assistant entities.
+**Beta development branch. Not suitable for production Home Assistant.**
 
-Travel Tracker is a Home Assistant custom integration that automatically scans your travel confirmation emails and builds structured trip information for use in dashboards, automations, notifications, and family travel planning.
+Travel Tracker scans a dedicated IMAP mailbox/folder **locally**, extracts simple travel itinerary fields, groups nearby reservations into tentative trips, and publishes Home Assistant sensors.
 
-Instead of manually entering flights, hotels, and rental cars into Home Assistant, simply book your travel and let Travel Tracker do the rest.
+## Current functionality
 
----
+- Example-format American Airlines, Hilton, and National rental confirmations (not comprehensive provider support).
+- 6 sensors: next trip, next flight, next hotel, next rental car, days until next trip, upcoming trips.
+- 2 binary sensors: travel today and travel within the next 7 days.
+- Two setup modes: opt in to **reuse Mail and Packages IMAP settings** (no password re-entry) or configure a **separate IMAP mailbox**.
+- Linked Mail and Packages mode still performs a second independent IMAP scan; true shared-connection mode requires supported upstream cooperation.
+- Secure IMAP (TLS, port 993 default), read-only mailbox selection, and `BODY.PEEK[]`.
+- No raw email or attachments persisted by Travel Tracker. No confirmation numbers, ticket numbers, payment details or loyalty numbers intentionally retained.
+- No analytics processing outside your HA instance; mailbox connection itself is to your mail provider.
+- Up to 300 of the most recent messages from the last 365 days scanned per refresh; default refresh every 30 minutes.
 
-## ✨ Planned Features
+## Installation: only in an isolated test Home Assistant
 
-### ✈️ Flights
+Do **not** install this branch over an existing integration or a live HA instance yet.
+A disposable Home Assistant install is the supported test target while we validate emails and migrations.
 
-- Flight number
-- Airline
-- Departure airport
-- Arrival airport
-- Departure time
-- Arrival time
+1. In your isolated HA config directory create `custom_components/travel_tracker` with the integration's files.
+2. Restart the test HA instance, then use **Settings → Devices & services → Add integration → Travel Tracker**.
+3. If Mail and Packages is already installed, choose either **Reuse Mail and Packages settings** or **Set up a separate IMAP connection**. Otherwise the standalone setup form opens directly.
+4. In linked mode, choose the source account and optionally override its email folder. No second password is stored, but Travel Tracker still scans IMAP separately.
+5. For standalone mode, configure your IMAP host, port, username, app password, travel folder and poll interval.
+4. Use a dedicated, non-sensitive test mailbox. Do not paste real credentials into GitHub issues or tests.
 
-### 🏨 Hotels
+## Run isolated tests
 
-- Hotel name
-- City
-- Check-in date
-- Check-out date
-
-### 🚗 Rental Cars
-
-- Rental company
-- Pickup location
-- Pickup date
-- Return date
-
-### 📅 Trip Management
-
-- Automatically group reservations into trips
-- Next trip summary
-- Days until departure
-- Family-friendly travel dashboard
-- Home Assistant entities
-- Automation support
-
----
-
-# Supported Providers (Planned)
-
-## Airlines
-
-- American Airlines
-- Delta
-- United
-- Southwest
-- JetBlue
-- Air Canada
-
-## Hotels
-
-- Hilton
-- Marriott
-
-## Rental Cars
-
-- National
-- Enterprise
-
-Additional providers will be added over time.
-
----
-
-# Example Dashboard
-
-```
-✈️ NEXT TRIP
-
-Dallas, Texas
-
-Leaves
-July 22
-
-Flight
-AA1234
-
-Hotel
-Hilton Garden Inn
-
-Rental Car
-National
-
-Returns
-July 25
+```bash
+python -m pip install pytest
+python -m pytest --noconftest -q tests/test_travel_parser.py tests/test_full_sandbox.py
 ```
 
----
+GitHub Actions runs these tests, plus a test using the actual Home Assistant test harness and a mocked mailbox. See `.github/workflows/travel-ha-sandbox.yml`.
 
-# Planned Home Assistant Entities
+## Known limitations
 
-```
-sensor.next_trip
-sensor.next_flight
-sensor.next_hotel
-sensor.next_rental_car
+- The email parser expects explicit labels and dates in a few example formats, not production provider templates.
+- Trips are grouped by overlapping/adjacent dates, so unrelated trips can be grouped incorrectly.
+- Each parsed email currently yields one booking; multi-segment flights aren't fully supported.
+- Cancellations, schedule changes, time zones, boarding data, live flight status, OAuth login and reauthentication need additional work.
+- Mailbox access is bounded by age and message count. Older confirmations can be missed.
+- Travel details are stored as Home Assistant entity states and may be retained by HA Recorder and backups.
+- Sender-domain recognition is **not** sender authentication (SPF/DKIM).
 
-binary_sensor.travel_today
-binary_sensor.travel_this_week
-sensor.days_until_trip
-```
+## Project links
 
----
+- [Development PR](https://github.com/zhockey/Home-Assistant-Travel-Tracker/pull/3)
+- [Beta notes](docs/TRAVEL_TRACKER_BETA.md)
+- [Issue tracker](https://github.com/zhockey/Home-Assistant-Travel-Tracker/issues)
 
-# Privacy & Security
+## Credit and license
 
-Travel Tracker is designed with privacy as a first-class feature.
-
-- ✅ All email processing happens locally inside Home Assistant.
-- ✅ No cloud services are used.
-- ✅ No travel data leaves your Home Assistant instance.
-- ✅ Confirmation numbers are **not stored**.
-- ✅ Ticket numbers are **not stored**.
-- ✅ Payment information is **never stored**.
-- ✅ Loyalty account numbers are **never stored**.
-- ✅ Reservation management links are discarded after parsing.
-
-Travel Tracker stores only the information necessary to build your travel dashboard and Home Assistant entities.
-
----
-
-# Roadmap
-
-## Version 0.1
-
-- Rename integration
-- Standalone Home Assistant integration
-- Development environment
-
-## Version 0.2
-
-- American Airlines parser
-
-## Version 0.3
-
-- Hilton parser
-
-## Version 0.4
-
-- National Car Rental parser
-
-## Version 0.5
-
-- Trip Builder
-
-## Version 0.6
-
-- Dashboard entities
-
-## Version 1.0
-
-- HACS Release
-- Community provider support
-
----
-
-# Credits
-
-Travel Tracker began as a fork of the outstanding **Mail and Packages** integration created by **Moralmunky** and its contributors.
-
-The Mail and Packages project solved the challenge of securely connecting Home Assistant to email providers and building a robust email-processing framework. Travel Tracker builds upon that foundation to parse travel confirmations instead of shipment notifications.
-
-A sincere thank you to:
-
-- **Moralmunky**
-- **@firstof9**
-- All contributors to the Mail and Packages project
-
-Their work made this project possible.
-
-Original Project:
-
-https://github.com/moralmunky/Home-Assistant-Mail-And-Packages
-
----
-
-# Contributing
-
-Contributions, bug reports, provider requests, and feature ideas are always welcome.
-
-As the project grows, additional airline, hotel, rental car, cruise, rail, and travel providers will be added with community support.
-
----
-
-# License
-
-This project is licensed under the MIT License.
-
-Travel Tracker is a derivative work of the Mail and Packages integration and retains all required license notices from the original project.ns)
+Originally forked from [Mail and Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages) by Moralmunky and its contributors. The original MIT license and copyright attribution remain in [LICENSE](LICENSE). The current travel-specific runtime is a rewrite, not a published release.

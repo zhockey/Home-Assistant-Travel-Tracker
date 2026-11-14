@@ -1,13 +1,15 @@
 {
   "domain": "travel_tracker",
   "name": "Travel Tracker",
-  "dependencies": [],
-  "codeowners": [],
+  "version": "0.2.0b1",
   "config_flow": true,
-  "requirements": [
-    "imageio>=2.9.0",
-    "python-resize-image>=1.1.19"
+  "dependencies": [],
+  "codeowners": [
+    "@zhockey"
   ],
+  "documentation": "https://github.com/zhockey/Home-Assistant-Travel-Tracker",
+  "issue_tracker": "https://github.com/zhockey/Home-Assistant-Travel-Tracker/issues",
+  "integration_type": "service",
   "iot_class": "cloud_polling",
-  "version": "0.1.0"
+  "requirements": []
 }
