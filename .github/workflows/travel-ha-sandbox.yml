@@ -38,4 +38,4 @@ jobs:
       - name: Install HA testing fixtures
         run: python -m pip install pytest-homeassistant==2026.11.0
       - name: Real Home Assistant entity setup test (fake inbox only)
-        run: python -m pytest --noconftest -q -o asyncio_mode=auto tests/test_travel_ha_runtime.py
+        run: python -m pytest -p no:respx --noconftest -q -o asyncio_mode=auto tests/test_travel_ha_runtime.py
