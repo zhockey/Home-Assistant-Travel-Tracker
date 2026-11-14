@@ -123,3 +123,25 @@ def test_sensitive_codes_appended_to_hotel_field_do_not_leak():
     assert booking is not None
     assert booking.details["hotel"] == "Hilton Garden Inn Pittsburgh"
     assert "SECURE-PNR-123" not in str(booking.as_dict())
+
+
+def test_flight_time_change_keeps_same_identity():
+    original = parse_confirmation("notify@aa.com", "Booking", AA_BODY)
+    updated = parse_confirmation(
+        "notify@aa.com", "New departure time",
+        AA_BODY.replace("9:15 AM", "10:30 AM"),
+    )
+    assert original.key == updated.key
+    assert updated.details["departure_time_local"] == "10:30 AM"
+
+
+def test_different_day_or_route_is_not_deduplicated():
+    original = parse_confirmation("notify@aa.com", "Booking", AA_BODY)
+    other_date = parse_confirmation(
+        "notify@aa.com", "Booking", AA_BODY.replace("November 19, 2026", "November 20, 2026")
+    )
+    other_route = parse_confirmation(
+        "notify@aa.com", "Booking", AA_BODY.replace("Pittsburgh (PIT)", "New York (JFK)")
+    )
+    assert original.key != other_date.key
+    assert original.key != other_route.key

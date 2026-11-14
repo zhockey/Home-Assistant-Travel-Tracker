@@ -110,3 +110,13 @@ def test_previous_trip_is_not_upcoming():
     snapshot = trips.build_snapshot([flight], date(2027, 2, 1))
     assert snapshot["upcoming_count"] == 0
     assert snapshot["next_flight"] is None
+
+
+def test_latest_same_day_flight_change_supersedes_old_time():
+    before = mailbox.parse_message(fixture_email("notify@aa.com", FLIGHT))
+    after = mailbox.parse_message(
+        fixture_email("notify@aa.com", FLIGHT.replace("9:15 AM", "10:30 AM"))
+    )
+    state = trips.build_snapshot([before, after], date(2026, 11, 13))
+    assert state["next_flight"]["departure_time_local"] == "10:30 AM"
+    assert len(state["next_trip"]["reservations"]) == 1

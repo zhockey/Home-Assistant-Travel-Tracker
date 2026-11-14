@@ -29,11 +29,27 @@ class Booking:
     @property
     def key(self) -> str:
         """Stable de-duplication key from the itinerary, not confirmation IDs."""
-        values = (
-            self.kind, self.provider, self.start_date.isoformat(),
-            self.end_date.isoformat(), self.description, self.destination,
-            *(f"{key}:{value}" for key, value in sorted(self.details.items())),
-        )
+        # Arrival/departure times and stay check-out dates may change in a
+        # later notification. Use a stable itinerary identity to reconcile
+        # same-day changes without storing provider confirmation numbers.
+        if self.kind == "flight":
+            values = (
+                self.kind, self.provider, self.start_date.isoformat(),
+                self.details.get("flight_number", ""),
+                self.details.get("origin", ""),
+                self.details.get("arrival_airport", ""),
+            )
+        elif self.kind == "hotel":
+            values = (
+                self.kind, self.provider, self.start_date.isoformat(),
+                self.details.get("hotel", ""), self.destination,
+            )
+        else:
+            values = (
+                self.kind, self.provider, self.start_date.isoformat(),
+                self.details.get("pickup_location", ""),
+                self.details.get("return_location", ""),
+            )
         return hashlib.sha256("\x00".join(values).encode("utf-8")).hexdigest()[:20]
 
     def as_dict(self) -> dict:
