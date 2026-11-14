@@ -39,7 +39,16 @@ def resolve_mailbox_config(hass: HomeAssistant, config: dict) -> tuple:
     source = config
     if config.get(CONF_SOURCE) == SOURCE_LINKED:
         entry_id = config.get(CONF_LINKED_ENTRY_ID)
-        entry = hass.config_entries.async_get(entry_id) if entry_id else None
+        entry = next(
+            (
+                candidate
+                for candidate in hass.config_entries.async_entries(
+                    MAIL_AND_PACKAGES_DOMAIN
+                )
+                if candidate.entry_id == entry_id
+            ),
+            None,
+        )
         if entry is None or entry.domain != MAIL_AND_PACKAGES_DOMAIN:
             raise UpdateFailed("Linked Mail and Packages account is unavailable")
         source = entry.data
