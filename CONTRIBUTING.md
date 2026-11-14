@@ -1,51 +1,11 @@
-# Contribution guidelines
+# Contributing to Travel Tracker
 
-Contributing to this project should be as easy and transparent as possible, whether it's:
+This is an early beta and is not ready for users' actual confirmation emails.
 
-- Reporting a bug
-- Discussing the current state of the code
-- Submitting a fix
-- Proposing new features
+1. Create a feature branch based on the Travel Tracker development branch.
+2. Write tests using *invented* booking details. Do not commit real emails, PNRs, confirmation codes, identity data, boarding passes, loyalty numbers or payment details.
+3. Keep email parsing local and ensure only approved itinerary fields reach Home Assistant sensors and logs.
+4. Run the simulated mailbox test suite and the Home Assistant smoke test before requesting a merge.
+5. Preserve the MIT LICENSE and upstream Mail and Packages attribution.
 
-## Github is used for everything
-
-Github is used to host code, to track issues and feature requests, as well as accept pull requests.
-
-Pull requests are the best way to propose changes to the codebase.
-
-1. Fork the repo and create your branch from `dev`.
-2. If you've changed something, update the documentation.
-3. Make sure your code lints (using black).
-4. Test you contribution.
-5. Issue that pull request!
-
-## Any contributions you make will be under the MIT Software License
-
-In short, when you submit code changes, your submissions are understood to be under the same [MIT License](http://choosealicense.com/licenses/mit/) that covers the project. Feel free to contact the maintainers if that's a concern.
-
-## Report bugs using Github's [issues](../../issues)
-
-GitHub issues are used to track public bugs.
-Report a bug by [opening a new issue](../../issues/new/choose); it's that easy!
-
-## Write bug reports with detail, background, and sample code
-
-**Great Bug Reports** tend to have:
-
-- A quick summary and/or background
-- Steps to reproduce
-  - Be specific!
-  - Give sample code if you can.
-- What you expected would happen
-- What actually happens
-- Notes (possibly including why you think this might be happening, or stuff you tried that didn't work)
-
-People *love* thorough bug reports. I'm not even kidding.
-
-## Use a Consistent Coding Style
-
-Use [black](https://github.com/ambv/black) to make sure the code follows the style.
-
-## License
-
-By contributing, you agree that your contributions will be licensed under its MIT License.
+Note that a successful simulated email parse does not establish production support for an airline's actual emails.
